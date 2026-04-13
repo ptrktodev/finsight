@@ -7,7 +7,7 @@
 
 O usuário registra suas transações a pagar pelo chatbot, a API faz a ponte dos dados e um agente LangChain é capaz de responder perguntas do tipo "quais são minhas despesas nor próximos 10 dias" ou "qual a soma total por categoria".
 
-#### Funcionalidades
+### Funcionalidades
 
 **Telegram (app de mensagens)**
 - Chat para inserir transações (valor, categoria, descrição, data).
