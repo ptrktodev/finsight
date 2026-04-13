@@ -42,13 +42,14 @@ O usuário registra suas transações a pagar pelo chatbot, a API faz a ponte do
 - Tabela única para cada usuário criada a partir da primeira interação.
 - Tabela transactions: id, amount, category, description, date, type (income/expense)
 ​
-#### Fluxos
+### Fluxos
 
 O diagrama abaixo representa o fluxo principal da aplicação com três componentes: o FrontEnd no telegram que encaminha mensagens de chat para o Agente IA, que também acessa o banco por meio de tools.
 
 ![Fluxo](img/Fluxo-Projeto.png)
 
-#### Ferramentas do Projeto
+### Ferramentas do Projeto
+
 - LangChain: framework que conecta o agente, as ferramentas e o LLM em um único fluxo
 - SQLite: banco de dados local e leve, sem servidor, que armazena todas as transações
 - Visual Studio Code: editor de código principal do projeto
