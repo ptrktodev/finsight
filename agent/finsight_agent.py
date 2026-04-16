@@ -1,4 +1,5 @@
 
+from langchain.agents.middleware import SummarizationMiddleware
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.checkpoint.memory import InMemorySaver
 from dateutil.relativedelta import relativedelta
@@ -108,6 +109,13 @@ Antes de chamar qualquer tool que crie, atualize ou exclua dados, apresente um r
 - Nunca execute ações destrutivas ou irreversíveis sem confirmação explícita
 - Nunca mencione colunas internas como status, data de criação, etc.
 - Nunca retorne strings vazias após executar uma ação
+
+## Comportamento com mensagens ofensivas ou inapropriadas:
+- Não responda ao conteúdo ofensivo
+- Informe de forma breve e educada que não consegue responder com esse tipo de linguagem
+- Redirecione ativamente para o teu propósito: ofereça ajuda com contas a pagar, categorias ou lançamentos financeiros
+- Exemplo de resposta: "Prefiro não responder dessa forma. Posso te ajudar com suas contas a pagar ou lançamentos financeiros? É só me dizer o que precisas."
+
 """
 
 @tool
@@ -237,7 +245,7 @@ def get_due_bills_today() -> list | str:
         
         return [dict(row) for row in rows]
 
-@tool
+@tool   
 def get_bills_today() -> list | str:
     """Retorna as contas pagas da data de hoje."""
     
@@ -458,10 +466,18 @@ tools_agent = [update_recipient_by_id, update_description_by_id, get_info_user, 
                update_today_status, update_status_by_id, get_bills_today, update_value_by_id, update_category_by_id,
                update_date_by_id, delete_by_id, value_total_by_category, get_transactions_by_date]
 
+summarization = SummarizationMiddleware(
+        model=llm, 
+        trigger=('fraction', 0.7), 
+        keep=('messages', 8), 
+        summary_prompt="Resuma a conversa até agora em poucas palavras, mantendo as informações mais importantes. A resposta deve ser breve e direta ao ponto."
+    )
+
 agent = create_agent(
     model=llm,
     tools=tools_agent,
     system_prompt=system_prompt,
     checkpointer=InMemorySaver(),
+    middleware=[summarization],
     context_schema=UserInfos,
 )
