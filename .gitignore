@@ -1,0 +1,6 @@
+meu_banco.db
+venv
+.env
+.txt
+__pycache__
+.vscode
