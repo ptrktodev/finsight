@@ -1,13 +1,13 @@
 # telegram_bot.py
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 from langchain_core.messages import HumanMessage
-from finsight_agent import agent, UserInfos
+from agent.finsight_agent import agent, UserInfos
 from telegram import Update
 from pprint import pprint
 import asyncio
 import os
 
-API_KEY_TELEGRAM = os.environ['TELEGRAM_API']   
+API_KEY_TELEGRAM = os.environ['TELEGRAM_API']  
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session_id = str(update.message.chat_id) 
